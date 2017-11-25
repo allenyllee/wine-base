@@ -123,7 +123,7 @@ USER root
 # RUN echo -e '#!/bin/bash\necho hello' > /usr/bin/hi && \
 # chmod +x /usr/bin/hi
 #
-RUN echo "#!/bin/bash\nexport LINE_PATH=$HOME/.wine/drive_c/users/LINEer/Local\ Settings/Application\ Data/LINE/bin\nwine \"\$LINE_PATH\"/LineLauncher.exe\nWAIT=wineserver; echo \"Start waiting on \$WAIT\"; while pgrep -u `whoami` \"\$WAIT\" > /dev/null; do echo \"waiting ...\" ; sleep 1; done ; echo \"\$WAIT completed\"" | tee -a /usr/bin/Line && \
+RUN echo "#!/bin/bash\nexport LINE_PATH=\$HOME/.wine/drive_c/users/LINEer/Local\ Settings/Application\ Data/LINE/bin\nwine \"\$LINE_PATH\"/LineLauncher.exe\nWAIT=wineserver; echo \"Start waiting on \$WAIT\"; while pgrep -u \`whoami\` \"\$WAIT\" > /dev/null; do echo \"waiting ...\" ; sleep 1; done ; echo \"\$WAIT completed\"" | tee -a /usr/bin/Line && \
     chmod +x /usr/bin/Line
 
 
