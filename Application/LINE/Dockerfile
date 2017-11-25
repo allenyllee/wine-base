@@ -12,6 +12,24 @@ RUN apt update
 
 ##############################
 #########################
+## Tools
+#########################
+##############################
+
+##########
+# install wget
+##########
+# in order to download LineInst.exe
+RUN apt install -y wget
+
+##########
+# install xvfb
+##########
+# in order to initialize wine headless in docker build time
+RUN apt install -y xvfb
+
+##############################
+#########################
 ## install LINE
 #########################
 ##############################
@@ -34,8 +52,8 @@ RUN useradd -m LINEer -s /bin/bash
 RUN echo LINEer:LINEer | chpasswd
 
 # install sudo and make user LINEer as sudoer
-RUN apt-get install -y sudo && \
-    echo "LINEer       ALL=(ALL)          NOPASSWD: ALL" >> /etc/sudoers
+#RUN apt-get install -y sudo && \
+#    echo "LINEer       ALL=(ALL)          NOPASSWD: ALL" >> /etc/sudoers
 
 
 # change user
@@ -93,6 +111,10 @@ RUN Xvfb :99 & export DISPLAY=:99 && \
     wine "/home/`whoami`/LineInst.exe" /s || : && \
     WAIT=wineserver; echo "Start waiting on $WAIT"; while pgrep -u `whoami` "$WAIT" > /dev/null; do echo "waiting ..." ; sleep 1; done ; echo "$WAIT completed"
 
+
+# change user
+USER root
+
 #
 # unix - How to set bash aliases for docker containers in Dockerfile? - Stack Overflow
 # https://stackoverflow.com/questions/36388465/how-to-set-bash-aliases-for-docker-containers-in-dockerfile
@@ -101,8 +123,8 @@ RUN Xvfb :99 & export DISPLAY=:99 && \
 # RUN echo -e '#!/bin/bash\necho hello' > /usr/bin/hi && \
 # chmod +x /usr/bin/hi
 #
-RUN echo "#!/bin/bash\nexport LINE_PATH=$HOME/.wine/drive_c/users/LINEer/Local\ Settings/Application\ Data/LINE/bin\nwine \"\$LINE_PATH\"/LineLauncher.exe\nWAIT=wineserver; echo \"Start waiting on \$WAIT\"; while pgrep -u `whoami` \"\$WAIT\" > /dev/null; do echo \"waiting ...\" ; sleep 1; done ; echo \"\$WAIT completed\"" | sudo tee -a /usr/bin/Line && \
-    sudo chmod +x /usr/bin/Line
+RUN echo "#!/bin/bash\nexport LINE_PATH=$HOME/.wine/drive_c/users/LINEer/Local\ Settings/Application\ Data/LINE/bin\nwine \"\$LINE_PATH\"/LineLauncher.exe\nWAIT=wineserver; echo \"Start waiting on \$WAIT\"; while pgrep -u `whoami` \"\$WAIT\" > /dev/null; do echo \"waiting ...\" ; sleep 1; done ; echo \"\$WAIT completed\"" | tee -a /usr/bin/Line && \
+    chmod +x /usr/bin/Line
 
 
 ##############
