@@ -1,4 +1,4 @@
-# wine_X_docker
+# wine-base
 #
 # VERSION               0.0.1
 
