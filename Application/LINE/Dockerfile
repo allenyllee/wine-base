@@ -2,7 +2,7 @@
 #
 # VERSION               0.0.1
 
-FROM        allenyllee/wine-base
+FROM        allenyllee/wine-base:test
 LABEL       maintainer="allen7575@gmail.com"
 
 ############
@@ -107,6 +107,12 @@ RUN cd ~ && \
 # In fact, it's actually invalid to try that, just the same as if you put two semicolons
 # in sequence, the actual problem being that bash does not permit empty commands
 #
+
+# RUN Xvfb :99 & export DISPLAY=:99 && \
+#     wineserver -d2 -f  || : && \
+#     WAIT=wineserver; echo "Start waiting on $WAIT"; while pgrep -u `whoami` "$WAIT" > /dev/null; do echo "waiting ..." ; sleep 1; done ; echo "$WAIT completed"
+
+
 RUN Xvfb :99 & export DISPLAY=:99 && \
     wine "/home/`whoami`/LineInst.exe" /s || : && \
     WAIT=wineserver; echo "Start waiting on $WAIT"; while pgrep -u `whoami` "$WAIT" > /dev/null; do echo "waiting ..." ; sleep 1; done ; echo "$WAIT completed"

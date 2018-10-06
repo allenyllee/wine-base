@@ -1,7 +1,7 @@
 #/bin/bash
 
-CONTAINER_NAME="line-wine"
-IMAGE="allenyllee/line-wine:test"
+CONTAINER_NAME="wine"
+IMAGE="allenyllee/wine-base:test"
 
 
 XSOCK=/tmp/.X11-unix
@@ -36,8 +36,8 @@ nvidia-docker rm $CONTAINER_NAME
 nvidia-docker pull $IMAGE
 
 # run new container
-nvidia-docker run -ti \
-    --user LINEer \
+nvidia-docker run -ti --rm \
+    --user root \
     --name $CONTAINER_NAME \
     --env DISPLAY=$DISPLAY \
     --env XAUTHORITY=$XAUTH \
@@ -45,6 +45,5 @@ nvidia-docker run -ti \
     --volume $XAUTH_DIR:$XAUTH_DIR \
     `#--device /dev/video0:/dev/video0 # for webcam` \
     --entrypoint /bin/bash \
-    --restart on-failure \
     $IMAGE \
     -c "bash"

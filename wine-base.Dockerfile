@@ -2,7 +2,7 @@
 #
 # VERSION               0.0.1
 
-FROM        ubuntu:16.04
+FROM        nvidia/cudagl:9.0-devel-ubuntu16.04
 LABEL       maintainer="allen7575@gmail.com"
 
 ##
@@ -150,17 +150,17 @@ RUN apt install -y libxv1
 # when nvidia-docker run is used, we inspect the image specified on the command-line. In this image,
 # we lookup the presence and the value of the label com.nvidia.volumes.needed
 
-# if you are using nvidia driver, you need to add this to avoid
-# libGL error: failed to load driver: swrast
-LABEL com.nvidia.volumes.needed="nvidia_driver"
-ENV PATH /usr/local/nvidia/bin:${PATH}
-ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
+# # if you are using nvidia driver, you need to add this to avoid
+# # libGL error: failed to load driver: swrast
+# LABEL com.nvidia.volumes.needed="nvidia_driver"
+# ENV PATH /usr/local/nvidia/bin:${PATH}
+# ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
 
-# set PATH & LD_LIBRARY_PATH env variable for ssh login session
-# Env variable cannot be passed to container - General Discussions - Docker Forums
-# https://forums.docker.com/t/env-variable-cannot-be-passed-to-container/5298/6
-RUN echo 'export PATH=/usr/local/nvidia/bin:$PATH' >> /etc/profile.d/nvidia.sh && \
-    echo 'export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:$LD_LIBRARY_PATH' >> /etc/profile.d/nvidia.sh
+# # set PATH & LD_LIBRARY_PATH env variable for ssh login session
+# # Env variable cannot be passed to container - General Discussions - Docker Forums
+# # https://forums.docker.com/t/env-variable-cannot-be-passed-to-container/5298/6
+# RUN echo 'export PATH=/usr/local/nvidia/bin:$PATH' >> /etc/profile.d/nvidia.sh && \
+#     echo 'export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:$LD_LIBRARY_PATH' >> /etc/profile.d/nvidia.sh
 
 
 ##############
