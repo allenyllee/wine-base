@@ -11,9 +11,10 @@ LABEL       maintainer="allen7575@gmail.com"
 ##
 
 ############
-# update package list
+# update package list then upgrade
 ############
-RUN apt update
+RUN apt update -y && apt upgrade -y
+
 
 ##############################
 #########################
@@ -135,6 +136,11 @@ RUN apt install -y libxv1
 # https://cdn.rawgit.com/VirtualGL/virtualgl/2.5.2/doc/index.html#hd006001
 #RUN /opt/VirtualGL/bin/vglserver_config -config +s +f -t
 
+##########
+# install wget
+##########
+# in order to download LineInst.exe
+RUN apt install -y wget
 
 ##############################
 #########################
@@ -163,10 +169,7 @@ RUN apt install -y libxv1
 #     echo 'export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:$LD_LIBRARY_PATH' >> /etc/profile.d/nvidia.sh
 
 
-##############
-# upgrade
-##############
-RUN apt upgrade -y
+
 
 ##############
 # cleanup
