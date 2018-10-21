@@ -11,15 +11,9 @@ LABEL       maintainer="allen7575@gmail.com"
 ##
 
 ############
-<<<<<<< HEAD
 # update package list and upgrade
 ############
 RUN apt update && apt upgrade -y
-=======
-# update package list then upgrade
-############
-RUN apt update -y && apt upgrade -y
->>>>>>> 37c952a645e1d1173ff951ef20b6b37d4cd879b9
 
 
 ##############################

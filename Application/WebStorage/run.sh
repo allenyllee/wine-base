@@ -1,7 +1,7 @@
 #/bin/bash
 
-CONTAINER_NAME="wine"
-IMAGE="allenyllee/wine-base"
+CONTAINER_NAME="webstorage-wine-test"
+IMAGE="allenyllee/webstorage-wine"
 
 
 XSOCK=/tmp/.X11-unix
@@ -43,6 +43,8 @@ nvidia-docker run -ti --rm \
     --env XAUTHORITY=$XAUTH \
     --volume $XSOCK:$XSOCK \
     --volume $XAUTH_DIR:$XAUTH_DIR \
+    --volume /home/allenyllee/Projects_SSD/docker-srv/WebStorageConfig/.wine:/root/.wine \
+    --volume /home/allenyllee/Projects/ResilioSyncFolder/Cloud/WebStorage:/WebStorage \
     `#--device /dev/video0:/dev/video0 # for webcam` \
     --entrypoint /bin/bash \
     $IMAGE \
