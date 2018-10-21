@@ -42,6 +42,9 @@ nvidia-docker run -ti --rm \
     --env DISPLAY=$DISPLAY \
     --env XAUTHORITY=$XAUTH \
     --volume $XSOCK:$XSOCK \
+    --volume /home/allenyllee/Projects/server_setup/Dockerfile/wine-base/Application/WebStorage:/root/WebStorage \
+    --volume /home/allenyllee/Projects_SSD/docker-srv/WebStorageConfig/.wine:/root/.wine \
+    --volume /home/allenyllee/Projects/ResilioSyncFolder/Cloud/WebStorage:/WebStorage \
     --volume $XAUTH_DIR:$XAUTH_DIR \
     `#--device /dev/video0:/dev/video0 # for webcam` \
     --entrypoint /bin/bash \

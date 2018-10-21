@@ -11,9 +11,10 @@ LABEL       maintainer="allen7575@gmail.com"
 ##
 
 ############
-# update package list
+# update package list and upgrade
 ############
-RUN apt update
+RUN apt update && apt upgrade -y
+
 
 ##############################
 #########################
@@ -81,6 +82,23 @@ RUN mkdir /tmp/.X11-unix && \
     chmod 1777 /tmp/.X11-unix
 
 
+##########
+# install wget
+##########
+RUN apt install -y wget
+
+#########
+# install winetricks
+#########
+RUN wget -O /usr/local/bin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks && chmod +x /usr/local/bin/winetricks
+
+
+#########
+# install zenity for winetrick gui
+#########
+RUN apt install -y zenity
+
+
 ##############################
 #########################
 ## X11 GUI
@@ -136,6 +154,61 @@ RUN apt install -y libxv1
 #RUN /opt/VirtualGL/bin/vglserver_config -config +s +f -t
 
 
+
+
+##############
+##########
+# setup chinese locale
+##########
+##############
+
+# How to set the locale inside a Ubuntu Docker container? - Stack Overflow
+# https://stackoverflow.com/questions/28405902/how-to-set-the-locale-inside-a-ubuntu-docker-container
+
+# install locales package
+RUN apt-get -y install locales
+
+# Set the locale
+RUN sed -i -e 's/# zh_TW.UTF-8 UTF-8/zh_TW.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
+
+##########
+# docker 学习 - 解决ubuntu镜像中文乱码问题 - 简书
+# https://www.jianshu.com/p/43a3468362aa
+##########
+# set locale env
+#
+# 通常设置`LANG、LANGUAGE、LC_ALL`这三个就行了。
+# 关于他们三的关系简言之：
+# LANG默认设置，LC_*没设值的时候就拿LANG；
+# LANGUAGE是程序语言设置；
+# LC_ALL强制设置所有LC_*
+# 详细传送门： [https://blog.csdn.net/nick357/article/details/8513699]
+ENV LANG zh_TW.UTF-8
+ENV LANGUAGE zh_TW.UTF-8
+ENV LC_ALL zh_TW.UTF-8
+
+# 输入 `locale -a` ，查看一下现在已安装的语言，已经有`C.UTF-8`字符集
+# RUN locale -a
+# 输入 `locale` 查看下语言情况，显示语言不正确。
+# RUN locale
+
+########
+# 在 x64 Linux 桌面利用 Docker 技術進行「稅額試算服務線上登錄」作業 « Jamyy's Weblog
+# http://jamyy.us.to/blog/2015/05/7408.html
+########
+# 安装文泉驿微米黑字体
+# install chinese font
+RUN apt-get -y install ttf-wqy-microhei
+
+########
+# Docker容器时区设置与中文字符支持 - 倚楼听风雨 - SegmentFault 思否
+# https://segmentfault.com/a/1190000005026503
+########
+# Set the timezone.
+ENV TZ=Asia/Taipei
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+
 ##############################
 #########################
 ## nvidia-docker
@@ -163,10 +236,7 @@ RUN apt install -y libxv1
 #     echo 'export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:$LD_LIBRARY_PATH' >> /etc/profile.d/nvidia.sh
 
 
-##############
-# upgrade
-##############
-RUN apt upgrade -y
+
 
 ##############
 # cleanup
@@ -177,9 +247,9 @@ RUN apt upgrade -y
 # bash - autoremove option doesn't work with apt alias - Ask Ubuntu
 # https://askubuntu.com/questions/573624/autoremove-option-doesnt-work-with-apt-alias
 #
-RUN apt-get autoremove && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# RUN apt-get autoremove && \
+#     apt-get clean && \
+#     rm -rf /var/lib/apt/lists/*
 
 
 CMD    ["bash"]
