@@ -11,9 +11,15 @@ LABEL       maintainer="allen7575@gmail.com"
 ##
 
 ############
+<<<<<<< HEAD
 # update package list and upgrade
 ############
 RUN apt update && apt upgrade -y
+=======
+# update package list then upgrade
+############
+RUN apt update -y && apt upgrade -y
+>>>>>>> 37c952a645e1d1173ff951ef20b6b37d4cd879b9
 
 
 ##############################
@@ -153,6 +159,11 @@ RUN apt install -y libxv1
 # https://cdn.rawgit.com/VirtualGL/virtualgl/2.5.2/doc/index.html#hd006001
 #RUN /opt/VirtualGL/bin/vglserver_config -config +s +f -t
 
+##########
+# install wget
+##########
+# in order to download LineInst.exe
+RUN apt install -y wget
 
 
 
