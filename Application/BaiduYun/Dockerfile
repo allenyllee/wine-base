@@ -9,7 +9,8 @@ LABEL       maintainer="allen7575@gmail.com"
 
 COPY ./init /init
 
-RUN apt-get install cabextract
+# inorder to extract wininet package
+RUN apt-get install -y cabextract
 
 
 ##############
