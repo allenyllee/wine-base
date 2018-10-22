@@ -174,7 +174,9 @@ RUN apt install -y wget
 RUN apt-get -y install locales
 
 # Set the locale
-RUN sed -i -e 's/# zh_TW.UTF-8 UTF-8/zh_TW.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
+#RUN sed -i -e 's/# zh_TW.UTF-8 UTF-8/zh_TW.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
+
+RUN locale-gen zh_TW.UTF-8 zh_CN.UTF-8
 
 ##########
 # docker 学习 - 解决ubuntu镜像中文乱码问题 - 简书
