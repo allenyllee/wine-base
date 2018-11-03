@@ -18,9 +18,15 @@ export LC_ALL=en_US.UTF-8
 
 winetricks ie8 vcrun2008 winhttp wininet
 
+wine start ./wine_gecko-2.47-x86.msi
 
+wine start ./wine-mono-4.7.3.msi
+
+wine regedit ./OGL.reg
 
 ./set_chinese_for_wine.sh
+
+#playonlinux
 
 #wine installbackupandsync.exe
 wine start gsync_enterprise.msi

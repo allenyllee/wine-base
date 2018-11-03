@@ -37,13 +37,14 @@ nvidia-docker pull $IMAGE
 
 # run new container
 nvidia-docker run -ti --rm \
-    --user root \
+    --user guest \
     --name $CONTAINER_NAME \
     --env DISPLAY=$DISPLAY \
     --env XAUTHORITY=$XAUTH \
     --volume $XSOCK:$XSOCK \
     --volume $XAUTH_DIR:$XAUTH_DIR \
-    --volume /home/allenyllee/Projects_SSD/docker-srv/GoogleDriveConfig/.wine:/root/.wine \
+    --volume /home/allenyllee/Projects_SSD/docker-srv/GoogleDriveConfig/.wine:/home/guest/.wine \
+    --volume /home/allenyllee/Projects_SSD/docker-srv/GoogleDriveConfig/.PlayOnLinux:/home/guest/.PlayOnLinux \
     --volume /home/allenyllee/Projects/ResilioSyncFolder/Cloud/Google\ 雲端硬碟:/googledrive \
     `#--device /dev/video0:/dev/video0 # for webcam` \
     --entrypoint /bin/bash \
