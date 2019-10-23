@@ -1,7 +1,7 @@
 #/bin/bash
 
-CONTAINER_NAME="baiduyun-wine-test"
-IMAGE="allenyllee/baiduyun-wine"
+CONTAINER_NAME="baiduyun-wine-dev"
+IMAGE="allenyllee/baiduyun-wine-dev"
 
 
 XSOCK=/tmp/.X11-unix
