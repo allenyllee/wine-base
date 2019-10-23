@@ -18,89 +18,6 @@ RUN apt update && apt upgrade -y
 
 ##############################
 #########################
-## install wine
-#########################
-##############################
-
-#
-# repository - How can I get apt to use a mirror close to me, or choose a faster mirror? - Ask Ubuntu
-# https://askubuntu.com/questions/37753/how-can-i-get-apt-to-use-a-mirror-close-to-me-or-choose-a-faster-mirror
-#
-# apt - Trouble downloading packages list due to a "Hash sum mismatch" error - Ask Ubuntu
-# https://askubuntu.com/questions/41605/trouble-downloading-packages-list-due-to-a-hash-sum-mismatch-error
-#
-# Because there is trouble in download due to "Hash sum mismatch" with default mirror, change to other mirror
-#
-#RUN sed -i 's|archive.ubuntu.com|tw.archive.ubuntu.com|' /etc/apt/sources.list && \
-#    apt update
-
-
-#
-# How to Install Wine 2.0 Stable in Ubuntu 16.04, 14.04, 16.10 | UbuntuHandbook
-# http://ubuntuhandbook.org/index.php/2017/01/install-wine-2-0-ubuntu-16-04-14-04-16-10/
-#
-# Do following command before adding the PPA:
-#
-RUN apt install -y software-properties-common
-
-#
-# adding Ricotz’s PPA:
-# For 64-bit system, enable 32-bit architecture (if you haven’t already) via
-# sudo dpkg --add-architecture i386
-#
-# wine not initializing opengl - FedoraForum.org
-# https://forums.fedoraforum.org/showthread.php?t=231666
-#
-# err:wgl:X11DRV_WineGL_InitOpenglInfo couldn't initialize OpenGL, expect problems
-#
-# This was because Wine is 32 bit and requires 32 bit OGL library (duh!)
-#
-RUN add-apt-repository -y ppa:ricotz/unstable && \
-    dpkg --add-architecture i386 && \
-    apt update && \
-    apt install -y wine-stable
-
-#
-# WineHQ Forums • View topic - Error at launching game
-# https://forum.winehq.org/viewtopic.php?t=16162
-# Ierr:winediag:SECUR32_initNTLMSP ntlm_auth was not found or is outdated. Make sure that ntlm_auth >= 3.0.25 is in your path. Usually, you can find it in the winbind package of your distribution.
-#
-# Do what it says; install winbind. If you're not sure which package to install, ask your distro.
-#
-RUN apt install -y winbind
-
-#
-# Wineskin: play your favorite Windows games on Mac OS X without needing Microsoft Windows | Swords and Sandals: Crusader problems
-# http://wineskin.urgesoftware.com/tiki-view_forum_thread.php?comments_parentId=3675
-#
-# _XSERVTransmkdir: ERROR: euid != 0,directory /tmp/.X11-unix will not be created.
-#
-# 1. mkdir /tmp/.X11-unix (make a directory)
-# 2. sudo chmod a+rwx /tmp/.X11-unix (give it all rights)
-#
-RUN mkdir /tmp/.X11-unix && \
-    chmod 1777 /tmp/.X11-unix
-
-
-##########
-# install wget
-##########
-RUN apt install -y wget
-
-#########
-# install winetricks
-#########
-RUN wget -O /usr/local/bin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks && chmod +x /usr/local/bin/winetricks
-
-
-#########
-# install zenity for winetrick gui
-#########
-RUN apt install -y zenity
-
-
-##############################
-#########################
 ## X11 GUI
 #########################
 ##############################
@@ -152,13 +69,6 @@ RUN apt install -y libxv1
 # Granting Access to the 3D X Server
 # https://cdn.rawgit.com/VirtualGL/virtualgl/2.5.2/doc/index.html#hd006001
 #RUN /opt/VirtualGL/bin/vglserver_config -config +s +f -t
-
-##########
-# install wget
-##########
-# in order to download LineInst.exe
-RUN apt install -y wget
-
 
 
 ##############
@@ -215,6 +125,104 @@ RUN apt-get -y install ttf-wqy-microhei
 ENV TZ=Asia/Taipei
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+##############################
+#########################
+## install wine
+#########################
+##############################
+
+#
+# repository - How can I get apt to use a mirror close to me, or choose a faster mirror? - Ask Ubuntu
+# https://askubuntu.com/questions/37753/how-can-i-get-apt-to-use-a-mirror-close-to-me-or-choose-a-faster-mirror
+#
+# apt - Trouble downloading packages list due to a "Hash sum mismatch" error - Ask Ubuntu
+# https://askubuntu.com/questions/41605/trouble-downloading-packages-list-due-to-a-hash-sum-mismatch-error
+#
+# Because there is trouble in download due to "Hash sum mismatch" with default mirror, change to other mirror
+#
+#RUN sed -i 's|archive.ubuntu.com|tw.archive.ubuntu.com|' /etc/apt/sources.list && \
+#    apt update
+
+
+#
+# How to Install Wine 2.0 Stable in Ubuntu 16.04, 14.04, 16.10 | UbuntuHandbook
+# http://ubuntuhandbook.org/index.php/2017/01/install-wine-2-0-ubuntu-16-04-14-04-16-10/
+#
+# Do following command before adding the PPA:
+#
+RUN apt install -y software-properties-common
+
+# #
+# # adding Ricotz’s PPA:
+# # For 64-bit system, enable 32-bit architecture (if you haven’t already) via
+# # sudo dpkg --add-architecture i386
+# #
+# # wine not initializing opengl - FedoraForum.org
+# # https://forums.fedoraforum.org/showthread.php?t=231666
+# #
+# # err:wgl:X11DRV_WineGL_InitOpenglInfo couldn't initialize OpenGL, expect problems
+# #
+# # This was because Wine is 32 bit and requires 32 bit OGL library (duh!)
+# #
+# RUN add-apt-repository -y ppa:ricotz/unstable && \
+#     dpkg --add-architecture i386 && \
+#     apt update && \
+#     apt install -y wine-stable
+
+##########
+# install wget
+##########
+RUN apt install -y wget
+
+#
+# How To Install Wine 4.0 on Ubuntu 18.04 & 16.04 LTS - TecAdmin
+# https://tecadmin.net/install-wine-on-ubuntu/
+#
+RUN dpkg --add-architecture i386 && \
+    wget -qO - https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
+    apt-add-repository -y 'deb https://dl.winehq.org/wine-builds/ubuntu/ xenial main' && \
+    apt-get update && \
+    apt-get install -y --install-recommends winehq-stable
+
+#
+# WineHQ Forums • View topic - Error at launching game
+# https://forum.winehq.org/viewtopic.php?t=16162
+# Ierr:winediag:SECUR32_initNTLMSP ntlm_auth was not found or is outdated. Make sure that ntlm_auth >= 3.0.25 is in your path. Usually, you can find it in the winbind package of your distribution.
+#
+# Do what it says; install winbind. If you're not sure which package to install, ask your distro.
+#
+RUN apt install -y winbind
+
+#
+# Wineskin: play your favorite Windows games on Mac OS X without needing Microsoft Windows | Swords and Sandals: Crusader problems
+# http://wineskin.urgesoftware.com/tiki-view_forum_thread.php?comments_parentId=3675
+#
+# _XSERVTransmkdir: ERROR: euid != 0,directory /tmp/.X11-unix will not be created.
+#
+# 1. mkdir /tmp/.X11-unix (make a directory)
+# 2. sudo chmod a+rwx /tmp/.X11-unix (give it all rights)
+#
+RUN mkdir /tmp/.X11-unix && \
+    chmod 1777 /tmp/.X11-unix
+
+
+
+
+#########
+# install winetricks
+#########
+RUN wget -O /usr/local/bin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks && chmod +x /usr/local/bin/winetricks
+
+
+#########
+# install zenity for winetrick gui
+#########
+RUN apt install -y zenity
+
+#######
+# install cpulimit for limit process cpu usages
+#######
+RUN apt install -y cpulimit
 
 ##############################
 #########################
