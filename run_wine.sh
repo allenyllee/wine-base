@@ -1,7 +1,16 @@
 #/bin/bash
 
-CONTAINER_NAME="wine"
-IMAGE="allenyllee/wine-base"
+COMMAND="$1"
+
+if [ "$COMMAND" == "" ]
+then
+    COMMAND="bash"
+fi
+
+echo $COMMAND
+
+CONTAINER_NAME="wine-base-dev"
+IMAGE="allenyllee/wine-base-dev"
 
 
 XSOCK=/tmp/.X11-unix
@@ -46,4 +55,4 @@ nvidia-docker run -ti --rm \
     `#--device /dev/video0:/dev/video0 # for webcam` \
     --entrypoint /bin/bash \
     $IMAGE \
-    -c "bash"
+    -c "$COMMAND"
