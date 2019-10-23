@@ -1,7 +1,16 @@
 #/bin/bash
 
-CONTAINER_NAME="webstorage-wine-test"
-IMAGE="allenyllee/webstorage-wine"
+COMMAND="$1"
+
+if [ "$COMMAND" == "" ]
+then
+    COMMAND="bash"
+fi
+
+echo $COMMAND
+
+CONTAINER_NAME="webstorage-wine-dev"
+IMAGE="allenyllee/webstorage-wine-dev"
 
 
 XSOCK=/tmp/.X11-unix
@@ -48,4 +57,4 @@ nvidia-docker run -ti --rm \
     `#--device /dev/video0:/dev/video0 # for webcam` \
     --entrypoint /bin/bash \
     $IMAGE \
-    -c "bash"
+    -c "$COMMAND"
