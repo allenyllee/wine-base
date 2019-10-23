@@ -2,7 +2,7 @@
 #
 # VERSION               0.0.1
 
-FROM        allenyllee/wine-base
+FROM        allenyllee/wine-base:wine-v3.0.3
 LABEL       maintainer="allen7575@gmail.com"
 
 
